@@ -9,10 +9,13 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import tv.beenius.demo.player.util.LogMessage
+import kotlin.math.abs
 
 class LoggingViewModel: ViewModel() {
     var messages: List<LogMessage> by mutableStateOf(listOf())
         private set
+
+    var manualScrollActive = false
 
     var listState: LazyListState? = null
 
@@ -22,13 +25,21 @@ class LoggingViewModel: ViewModel() {
 
     fun scrollDown() = listState?.apply {
         viewModelScope.launch {
-            scrollBy(100f)
+            scrollBy(200f).let {
+                if(abs(it) < 0.001f) {
+                    manualScrollActive = false
+                }
+            }
         }
     }
 
     fun scrollUp() = listState?.apply {
         viewModelScope.launch {
-            scrollBy(-100f)
+            scrollBy(-200f).let {
+                if(abs(it) > 0.001f) {
+                    manualScrollActive = true
+                }
+            }
         }
     }
 

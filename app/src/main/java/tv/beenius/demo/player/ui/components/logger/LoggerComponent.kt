@@ -43,9 +43,10 @@ fun LoggerComponent(
     }
 
     DisposableEffect(viewModel.messages.size) {
-
-        scope.launch {
-            state.animateScrollToItem(viewModel.messages.size - 1)
+        if(!viewModel.manualScrollActive) {
+            scope.launch {
+                state.animateScrollToItem(viewModel.messages.size - 1)
+            }
         }
 
         onDispose {  }

@@ -59,7 +59,7 @@ class MainActivity : ComponentActivity() {
         }
     }
 
-    override fun onKeyUp(keyCode: Int, event: KeyEvent?): Boolean {
+    override fun onKeyDown(keyCode: Int, event: KeyEvent?): Boolean {
         return when(keyCode) {
             KeyEvent.KEYCODE_DPAD_LEFT -> {
                 streamService.previous()

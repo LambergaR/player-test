@@ -15,7 +15,9 @@ class NativePlayerWrapper(
 ) {
     fun initialize() {
         initializeErrorListener()
-        initializeOnPreparedListener()
+        initializeInfoListener()
+        initializeListeners()
+        initializeDrmInfoListener()
     }
 
     fun setDataSource(url: String) {
@@ -37,7 +39,7 @@ class NativePlayerWrapper(
         } catch (e: Exception) {
             log(loggingViewModel) {
                 lines(
-                    "An error has occured",
+                    "An error has occurred",
                     e.localizedMessage ?: e.message ?: "unknown"
                 )
                 type = LogMessage.Type.ERROR
@@ -76,7 +78,7 @@ class NativePlayerWrapper(
             log(loggingViewModel) {
                 type = LogMessage.Type.ERROR
                 lines(
-                    "MediaPlayer - Error",
+                    "Error",
                     " what: $what",
                     " extra: $extra"
                 )
@@ -86,11 +88,51 @@ class NativePlayerWrapper(
         }
     }
 
-    private fun initializeOnPreparedListener() {
+    private fun initializeInfoListener() {
+        mediaPlayer.setOnInfoListener { _, what, extra ->
+            Timber.e("info: $what")
+
+            log(loggingViewModel) {
+                lines(
+                    "Info:",
+                    " what: $what",
+                    " extra: $extra"
+                )
+            }
+            false
+        }
+    }
+
+    private fun initializeDrmInfoListener() {
+        mediaPlayer.setOnDrmInfoListener { mp, drmInfo ->
+            Timber.e("drm info: $drmInfo")
+
+            log(loggingViewModel) {
+                lines(
+                    "Drm Info:",
+                    " $drmInfo"
+                )
+            }
+        }
+    }
+
+    private fun initializeListeners() {
         mediaPlayer.setOnPreparedListener {
-            Timber.e("prepared")
-            log(loggingViewModel, "MediaPlayer - Prepared")
+            "prepared".log(loggingViewModel)
             mediaPlayer.start()
         }
+
+        mediaPlayer.setOnCompletionListener {
+            "complete".log(loggingViewModel)
+        }
+
+        mediaPlayer.setOnBufferingUpdateListener { _, percent ->
+            "buffering $percent".log(loggingViewModel)
+        }
+
+        mediaPlayer.setOnVideoSizeChangedListener { _, width, height ->
+            "video size changed $width $height".log(loggingViewModel)
+        }
+
     }
 }
