@@ -10,3 +10,15 @@ inline fun String.log(vm: LoggingViewModel) {
         value = this
     )
 }
+
+inline fun String.log(vm: LoggingViewModel, type: LogMessage.Type) {
+    when(type) {
+        LogMessage.Type.ERROR -> Timber.e(this)
+        else -> Timber.i(this)
+    }
+
+    log(vm) {
+        this.type = type
+        lines(this@log)
+    }
+}

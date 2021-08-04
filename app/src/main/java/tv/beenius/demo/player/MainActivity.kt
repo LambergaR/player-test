@@ -87,6 +87,10 @@ class MainActivity : ComponentActivity() {
                 mainScreenViewModel.toggleLogger()
                 true
             }
+            KeyEvent.KEYCODE_PROG_BLUE -> {
+                player.unlock()
+                true
+            }
             else -> super.onKeyUp(keyCode, event)
         }
     }

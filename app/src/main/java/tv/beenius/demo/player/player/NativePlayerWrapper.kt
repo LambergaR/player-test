@@ -13,6 +13,9 @@ class NativePlayerWrapper(
     val loggingViewModel: LoggingViewModel,
     val streamService: StreamService
 ) {
+    var isLocked: Boolean = false
+        private set
+
     fun initialize() {
         initializeErrorListener()
         initializeInfoListener()
@@ -21,6 +24,14 @@ class NativePlayerWrapper(
     }
 
     fun setDataSource(url: String) {
+        if(isLocked) {
+            "The player is locked. Press the blue button to force unlock.".log(
+                loggingViewModel, LogMessage.Type.ERROR
+            )
+            return
+        }
+
+        lock()
         try {
             mediaPlayer.apply {
                 reset()
@@ -39,11 +50,12 @@ class NativePlayerWrapper(
         } catch (e: Exception) {
             log(loggingViewModel) {
                 lines(
-                    "An error has occurred",
+                    "An application error has occurred",
                     e.localizedMessage ?: e.message ?: "unknown"
                 )
                 type = LogMessage.Type.ERROR
             }
+            unlock()
         }
     }
 
@@ -60,15 +72,34 @@ class NativePlayerWrapper(
             "surfaceChanged".log(loggingViewModel)
 
             mediaPlayer.apply {
-                setSurface(holder.surface)
-                setDataSource(streamService.current().url)
+                try {
+                    setSurface(holder.surface)
+                    setDataSource(streamService.current().url)
+                } catch (e: Exception) {
+                    log(loggingViewModel) {
+                        type = LogMessage.Type.ERROR
+                        lines(
+                            "An application error has occurred",
+                            e.localizedMessage ?: e.message ?: "unknown"
+                        )
+                    }
+                }
             }
         }
 
         override fun surfaceDestroyed(holder: SurfaceHolder) {
             "surfaceDestroyed".log(loggingViewModel)
         }
+    }
 
+    fun lock() {
+        "locking the player".log(loggingViewModel)
+        isLocked = true
+    }
+
+    fun unlock() {
+        "unlocking the player".log(loggingViewModel)
+        isLocked = false
     }
 
     private fun initializeErrorListener() {
@@ -83,6 +114,8 @@ class NativePlayerWrapper(
                     " extra: $extra"
                 )
             }
+
+            unlock()
 
             false
         }
@@ -118,6 +151,7 @@ class NativePlayerWrapper(
 
     private fun initializeListeners() {
         mediaPlayer.setOnPreparedListener {
+            unlock()
             "prepared".log(loggingViewModel)
             mediaPlayer.start()
         }
@@ -133,6 +167,5 @@ class NativePlayerWrapper(
         mediaPlayer.setOnVideoSizeChangedListener { _, width, height ->
             "video size changed $width $height".log(loggingViewModel)
         }
-
     }
 }
