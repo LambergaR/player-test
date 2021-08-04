@@ -30,19 +30,3 @@ fun PlayerComponent(
         )
     }
 }
-
-class PlayerViewModel: ViewModel() {
-    var url: String by mutableStateOf("")
-        private set
-
-    private var valueChange: ((String) -> Unit)? = null
-
-    fun changeUrl(url: String) {
-        this.url = url
-        valueChange?.invoke(url)
-    }
-
-    fun onValueChange(c: (String) -> Unit) {
-        valueChange = c
-    }
-}

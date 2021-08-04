@@ -6,8 +6,11 @@ import kotlinx.serialization.json.Json
 import java.io.BufferedReader
 
 class MediaSampleServiceImpl : MediaSampleService {
-//    private val sampleName = "media.exolist.json"
     private val sampleName = "media.json"
+
+    private val json = Json {
+        ignoreUnknownKeys = true
+    }
 
     override fun read(context: Context) = context
             .assets
@@ -15,8 +18,6 @@ class MediaSampleServiceImpl : MediaSampleService {
             .bufferedReader()
             .use(BufferedReader::readText)
             .let {
-                Json {
-                    ignoreUnknownKeys = true
-                }.decodeFromString<List<MediaSampleCategory>>(it)
+                json.decodeFromString<List<MediaSample>>(it)
             }
 }

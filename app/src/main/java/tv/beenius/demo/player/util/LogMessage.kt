@@ -1,42 +1,32 @@
 package tv.beenius.demo.player.util
 
+import tv.beenius.demo.player.ui.components.logger.LoggingViewModel
 import java.time.Instant
 
-data class LogMessage(
-    val lines: List<String>,
-    val instant: Instant,
-    val type: Type = Type.LOG
-) {
-    constructor(value: String) : this(
-        lines = listOf(value),
-        instant = Instant.now(),
-        type = Type.LOG
+fun log(vm: LoggingViewModel, l: LogMessage.() -> Unit) {
+    vm.addMessage(
+        LogMessage().apply {
+            l(this)
+        }
     )
+}
+
+fun log(vm: LoggingViewModel, value: String) {
+    vm.addMessage(LogMessage().apply {
+        lines = arrayListOf(value)
+    })
+}
+
+class LogMessage{
+    var lines: List<String> = emptyList()
+    var instant: Instant = Instant.now()
+    var type: Type = Type.LOG
 
     enum class Type {
         LOG, ERROR
     }
 
-    class Builder {
-        private val lines = ArrayList<String>()
-        private val instant = Instant.now()
-
-        private var type = Type.LOG
-
-        fun addLine(l: String): Builder {
-            lines.add(l)
-            return this
-        }
-
-        fun type(t: Type): Builder {
-            type = t
-            return this
-        }
-
-        fun build() = LogMessage(
-            instant = instant,
-            lines = lines,
-            type = type
-        )
+    fun lines(vararg logLines: String) {
+        lines = arrayListOf(*logLines)
     }
 }

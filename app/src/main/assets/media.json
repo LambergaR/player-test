@@ -1,52 +1,18 @@
 [
-  {
-    "name": "Custom",
-    "samples": [
-      {
-        "name": "Beenius - RTSP - 1",
-        "uri": "rtsp://192.168.212.99/rec-fZ2f3JWo.ts"
-      },
-      {
-        "name": "Beenius - RTSP - 1",
-        "uri": "rtsp://192.168.212.99/rec-0ZSN74J4.ts"
-      },
-      {
-        "name": "Big Buck Bunny",
-        "uri": "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4"
-      },
-      {
-        "name": "Blender Movie - 2016",
-        "uri": "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4"
-      }
-    ]
-  },
-  {
-    "name": "Clear DASH",
-    "samples": [
-      {
-        "name": "HD (MP4, H264)",
-        "uri": "https://storage.googleapis.com/wvmedia/clear/h264/tears/tears.mpd"
-      },
-      {
-        "name": "UHD (MP4, H264)",
-        "uri": "https://storage.googleapis.com/wvmedia/clear/h264/tears/tears_uhd.mpd"
-      },
-      {
-        "name": "HD (MP4, H265)",
-        "uri": "https://storage.googleapis.com/wvmedia/clear/hevc/tears/tears.mpd"
-      },
-      {
-        "name": "UHD (MP4, H265)",
-        "uri": "https://storage.googleapis.com/wvmedia/clear/hevc/tears/tears_uhd.mpd"
-      },
-      {
-        "name": "HD (WebM, VP9)",
-        "uri": "https://storage.googleapis.com/wvmedia/clear/vp9/tears/tears.mpd"
-      },
-      {
-        "name": "UHD (WebM, VP9)",
-        "uri": "https://storage.googleapis.com/wvmedia/clear/vp9/tears/tears_uhd.mpd"
-      }
-    ]
-  }
+    {
+      "name": "Beenius - RTSP - 1",
+      "uri": "rtsp://192.168.212.99/rec-fZ2f3JWo.ts"
+    },
+    {
+      "name": "Beenius - RTSP - 1",
+      "uri": "rtsp://192.168.212.99/rec-0ZSN74J4.ts"
+    },
+    {
+      "name": "Big Buck Bunny",
+      "uri": "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4"
+    },
+    {
+      "name": "Blender Movie - 2016",
+      "uri": "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4"
+    }
 ]
